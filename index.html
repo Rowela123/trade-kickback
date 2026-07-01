@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trade Kickback — Free Business Credit Card Rewards Audit for Contractors & SMBs</title>
+<meta name="description" content="Contractors and small businesses spend thousands a month on materials and fuel. Trade Kickback is a free 1-minute audit that shows what your business card spending is leaving on the table — no signup, verified 2026 card data.">
+<meta name="keywords" content="business credit card rewards, contractor credit card, best business card for materials, small business cashback, card rewards audit">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://tradekickback.com/">
+<!-- Open Graph / social sharing -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Trade Kickback — What's your business spending leaving on the table?">
+<meta property="og:description" content="A free 1-minute audit of your business card rewards, built for trades, contractors and small businesses. No signup.">
+<meta property="og:url" content="https://tradekickback.com/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Trade Kickback — Free business card rewards audit">
+<meta name="twitter:description" content="See what your business spending is leaving on the table. Free, about a minute, no signup.">
+<!-- Structured data: helps search engines understand the page -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Trade Kickback",
+  "applicationCategory": "FinanceApplication",
+  "description": "A free audit that shows trades, contractors and small businesses what their business card spending is leaving on the table in unclaimed rewards.",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+}
+</script>
+<style>
+  :root{
+    --ink:#1a1d23;        /* near-black, primary text */
+    --paper:#f3efe6;      /* warm ledger paper */
+    --panel:#fbf9f4;      /* lighter card surface */
+    --rule:#d8d1c2;       /* hairline rules, ledger lines */
+    --green:#1f6b4a;      /* ledger green / money positive */
+    --green-deep:#16503a;
+    --gold:#a8772b;       /* accent, premium */
+    --red:#9e3b2e;        /* "leaking" / loss */
+    --muted:#6f6960;
+    --shadow:0 1px 0 rgba(0,0,0,.04), 0 8px 30px rgba(26,29,35,.08);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    font-family:"Georgia","Times New Roman",serif;
+    background:var(--paper);
+    color:var(--ink);
+    line-height:1.5;
+    /* faint ledger ruling */
+    background-image:linear-gradient(var(--rule) 1px, transparent 1px);
+    background-size:100% 2.2rem;
+    background-position:0 -1px;
+    min-height:100vh;
+  }
+  .wrap{max-width:620px;margin:0 auto;padding:24px 18px 80px}
+  .mono{font-family:"Courier New",ui-monospace,monospace}
+
+  /* Masthead */
+  header.mast{
+    text-align:center;border-bottom:2px solid var(--ink);
+    padding:14px 0 16px;margin-bottom:8px;
+  }
+  .mast .eyebrow{
+    font-family:"Courier New",monospace;font-size:11px;letter-spacing:.28em;
+    text-transform:uppercase;color:var(--muted);
+  }
+  .mast h1{
+    font-size:38px;line-height:1;letter-spacing:-.01em;margin:6px 0 4px;font-weight:700;
+  }
+  .mast .sub{font-size:14px;color:var(--muted);font-style:italic}
+
+  /* Progress ledger bar */
+  .progress{
+    display:flex;gap:4px;margin:18px 0 26px;align-items:center;
+    font-family:"Courier New",monospace;font-size:10px;letter-spacing:.15em;
+    text-transform:uppercase;color:var(--muted);
+  }
+  .progress .track{flex:1;height:6px;background:var(--rule);border-radius:0;overflow:hidden}
+  .progress .fill{height:100%;background:var(--green);width:0%;transition:width .4s ease}
+
+  /* Step card */
+  .step{
+    background:var(--panel);border:1px solid var(--rule);
+    box-shadow:var(--shadow);padding:26px 22px;display:none;
+    animation:rise .35s ease both;
+  }
+  .step.active{display:block}
+  @keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+  .qnum{
+    font-family:"Courier New",monospace;font-size:11px;letter-spacing:.2em;
+    color:var(--gold);text-transform:uppercase;margin-bottom:6px;
+  }
+  .qtitle{font-size:23px;line-height:1.25;margin-bottom:4px;font-weight:700}
+  .qhint{font-size:13.5px;color:var(--muted);font-style:italic;margin-bottom:20px}
+
+  /* Option buttons */
+  .opts{display:flex;flex-direction:column;gap:10px}
+  .opt{
+    display:flex;align-items:center;gap:12px;width:100%;text-align:left;
+    background:#fff;border:1px solid var(--rule);padding:15px 16px;
+    font-family:inherit;font-size:16px;color:var(--ink);cursor:pointer;
+    transition:border-color .15s, background .15s, transform .05s;
+  }
+  .opt:hover{border-color:var(--green);background:#fcfdfb}
+  .opt:active{transform:translateY(1px)}
+  .opt.sel{border-color:var(--green);background:#f0f6f1;box-shadow:inset 3px 0 0 var(--green)}
+  .opt .ico{font-size:20px;width:24px;text-align:center;flex:0 0 auto}
+  .opt .lab{flex:1}
+  .opt .lab b{display:block;font-size:16px}
+  .opt .lab span{display:block;font-size:13px;color:var(--muted);font-style:italic}
+
+  /* Slider rows */
+  .slider-row{margin-bottom:18px;border-bottom:1px dotted var(--rule);padding-bottom:14px}
+  .slider-row:last-child{border-bottom:none}
+  .slider-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
+  .slider-head .name{font-size:16px}
+  .slider-head .name small{display:block;font-size:12px;color:var(--muted);font-style:italic}
+  .slider-head .val{font-family:"Courier New",monospace;font-size:17px;color:var(--green-deep);font-weight:700}
+  input[type=range]{
+    width:100%;-webkit-appearance:none;appearance:none;height:4px;
+    background:var(--rule);outline:none;cursor:pointer;
+  }
+  input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none;appearance:none;width:22px;height:22px;border-radius:50%;
+    background:var(--green);border:3px solid var(--panel);box-shadow:0 1px 4px rgba(0,0,0,.25);cursor:pointer;
+  }
+  input[type=range]::-moz-range-thumb{
+    width:22px;height:22px;border-radius:50%;background:var(--green);
+    border:3px solid var(--panel);box-shadow:0 1px 4px rgba(0,0,0,.25);cursor:pointer;
+  }
+
+  /* Text & select inputs */
+  input[type=text], select{
+    width:100%;font-family:inherit;font-size:16px;padding:13px 14px;
+    border:1px solid var(--rule);background:#fff;color:var(--ink);
+  }
+  input[type=text]:focus, select:focus{outline:2px solid var(--green);outline-offset:-1px;border-color:var(--green)}
+  label.fld{display:block;font-size:13px;color:var(--muted);margin:14px 0 5px;font-family:"Courier New",monospace;letter-spacing:.08em;text-transform:uppercase}
+
+  /* Nav */
+  .nav{display:flex;justify-content:space-between;align-items:center;margin-top:24px;gap:12px}
+  .btn{
+    font-family:"Courier New",monospace;font-size:13px;letter-spacing:.12em;text-transform:uppercase;
+    padding:14px 22px;border:1px solid var(--ink);background:var(--ink);color:#fff;cursor:pointer;
+    transition:background .15s,transform .05s;
+  }
+  .btn:hover{background:#000}
+  .btn:active{transform:translateY(1px)}
+  .btn[disabled]{opacity:.35;cursor:not-allowed}
+  .btn.ghost{background:transparent;color:var(--ink);border-color:var(--rule)}
+  .btn.ghost:hover{background:#fff;border-color:var(--ink)}
+  .btn.wide{width:100%;padding:17px;font-size:14px;background:var(--green);border-color:var(--green-deep)}
+  .btn.wide:hover{background:var(--green-deep)}
+
+  /* Reveal */
+  .reveal-eyebrow{font-family:"Courier New",monospace;font-size:11px;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);text-align:center;margin-bottom:10px}
+  .bignum{
+    text-align:center;font-size:13px;color:var(--muted);
+  }
+  .bignum .amt{
+    display:block;font-size:60px;line-height:1.05;color:var(--red);font-weight:700;letter-spacing:-.02em;margin:6px 0 2px;
+  }
+  .bignum .per{font-family:"Courier New",monospace;font-size:12px;letter-spacing:.2em;text-transform:uppercase}
+  .reveal-line{text-align:center;font-size:17px;line-height:1.5;margin:18px 0;padding:0 6px}
+  .reveal-line .hl{color:var(--green-deep);font-weight:700}
+  .ledger-table{width:100%;border-collapse:collapse;margin:20px 0;font-size:15px}
+  .ledger-table td{padding:9px 4px;border-bottom:1px solid var(--rule)}
+  .ledger-table td:last-child{text-align:right;font-family:"Courier New",monospace;font-weight:700}
+  .ledger-table tr.tot td{border-bottom:2px solid var(--ink);border-top:1px solid var(--ink);font-weight:700;padding-top:11px}
+  .ledger-table .neg{color:var(--red)}
+  .ledger-table .pos{color:var(--green-deep)}
+  .flag{
+    background:#fdf6ec;border:1px solid var(--gold);border-left:4px solid var(--gold);
+    padding:13px 15px;font-size:14px;margin:18px 0;color:#6b4e1c;
+  }
+  .flag b{color:var(--gold)}
+  .disc{font-size:12px;color:var(--muted);font-style:italic;text-align:center;margin:14px 0}
+  .cta-box{border:2px solid var(--ink);padding:20px;margin-top:24px;text-align:center;background:#fff}
+  .cta-box h3{font-size:20px;margin-bottom:6px}
+  .cta-box p{font-size:14px;color:var(--muted);margin-bottom:16px}
+
+  /* paywall mock */
+  .pw-price{font-size:13px;color:var(--muted)}
+  .pw-price .p{font-size:34px;color:var(--ink);font-weight:700;font-family:"Courier New",monospace}
+
+  footer.fine{text-align:center;font-size:11px;color:var(--muted);margin-top:30px;font-style:italic}
+
+  /* helper text under sliders total */
+  .runtot{font-family:"Courier New",monospace;font-size:12px;color:var(--muted);text-align:right;margin-top:4px;letter-spacing:.05em}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none!important;transition:none!important}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="mast">
+    <div class="eyebrow">Business Card Rewards Audit</div>
+    <h1>Trade Kickback</h1>
+    <div class="sub">Find the money your business spending is leaving behind.</div>
+  </header>
+
+  <!-- LANDING SCREEN (shown first; SEO content lives here) -->
+  <section class="step active" data-step="0" id="landing">
+    <h2 style="font-size:25px;line-height:1.25;text-align:center;margin-bottom:10px">You spend thousands a month on materials and fuel. Are you getting anything back?</h2>
+    <p style="text-align:center;font-size:16px;color:var(--muted);margin-bottom:8px">Find out what your business spending is leaving on the table.</p>
+
+    <div id="counter" style="display:none;text-align:center;margin:18px 0;padding:12px;background:#f0f6f1;border:1px solid var(--green)">
+      <span class="mono" id="counterText" style="font-size:14px;color:var(--green-deep)"></span>
+    </div>
+
+    <div style="margin:22px 0">
+      <h3 style="font-size:14px;font-family:'Courier New',monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);text-align:center;margin-bottom:14px">How it works</h3>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="display:flex;gap:12px;align-items:flex-start"><span class="mono" style="color:var(--green-deep);font-weight:700">1.</span><span style="font-size:15px">Tell us roughly where your business spends — materials, fuel, tools, subs. Takes about a minute.</span></div>
+        <div style="display:flex;gap:12px;align-items:flex-start"><span class="mono" style="color:var(--green-deep);font-weight:700">2.</span><span style="font-size:15px">We check it against today's business cards and find the rewards you're missing.</span></div>
+        <div style="display:flex;gap:12px;align-items:flex-start"><span class="mono" style="color:var(--green-deep);font-weight:700">3.</span><span style="font-size:15px">You get a clear breakdown — what you're leaving behind, and the exact cards to fix it.</span></div>
+      </div>
+    </div>
+
+    <ul style="list-style:none;display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:center;font-size:13px;color:var(--muted);margin:18px 0">
+      <li>✓ Free</li>
+      <li>✓ About a minute</li>
+      <li>✓ No signup</li>
+      <li>✓ Card terms verified 2026</li>
+    </ul>
+
+    <button class="btn wide" id="startBtn">Start my free audit →</button>
+    <p style="text-align:center;font-size:12px;color:var(--muted);font-style:italic;margin-top:12px">Built for US trades, contractors and small businesses. Estimates only — not financial advice.</p>
+  </section>
+
+  <div class="progress" id="progressBar" style="display:none">
+    <span id="pstep">01</span>
+    <div class="track"><div class="fill" id="pfill"></div></div>
+    <span>08</span>
+  </div>
+
+  <!-- STEP 1 — business type -->
+  <section class="step" data-step="1">
+    <div class="qnum">Question 01 · Warm-up</div>
+    <div class="qtitle">What kind of business do you run?</div>
+    <div class="qhint">So we can sanity-check where your money tends to go.</div>
+    <select id="biztype">
+      <option value="">Choose one…</option>
+      <option>Contractor / trades (plumbing, HVAC, electrical, etc.)</option>
+      <option>Construction / building</option>
+      <option>E-commerce / online retail</option>
+      <option>Agency / marketing / services</option>
+      <option>Restaurant / food</option>
+      <option>Trucking / logistics</option>
+      <option>Auto / repair</option>
+      <option>Other</option>
+    </select>
+    <div class="nav">
+      <span></span>
+      <button class="btn" data-next>Continue →</button>
+    </div>
+  </section>
+
+  <!-- STEP 2 — years -->
+  <section class="step" data-step="2">
+    <div class="qnum">Question 02 · Warm-up</div>
+    <div class="qtitle">How long have you been running it?</div>
+    <div class="qhint">No wrong answer — this just helps us read your situation.</div>
+    <div class="opts" data-single="years">
+      <button class="opt" data-val="<1"><span class="ico">·</span><span class="lab"><b>Under a year</b></span></button>
+      <button class="opt" data-val="1-3"><span class="ico">··</span><span class="lab"><b>1 to 3 years</b></span></button>
+      <button class="opt" data-val="3-10"><span class="ico">···</span><span class="lab"><b>3 to 10 years</b></span></button>
+      <button class="opt" data-val="10+"><span class="ico">····</span><span class="lab"><b>10+ years</b></span></button>
+    </div>
+    <div class="nav">
+      <button class="btn ghost" data-back>← Back</button>
+      <button class="btn" data-next disabled>Continue →</button>
+    </div>
+  </section>
+
+  <!-- STEP 3 — monthly card spend -->
+  <section class="step" data-step="3">
+    <div class="qnum">Question 03 · The big one</div>
+    <div class="qtitle">Roughly how much does your business put on cards each month?</div>
+    <div class="qhint">Best guess is fine. Everything scales off this number.</div>
+    <div class="opts" data-single="spend">
+      <button class="opt" data-val="3000"><span class="ico">$</span><span class="lab"><b>Under $5,000</b></span></button>
+      <button class="opt" data-val="12000"><span class="ico">$$</span><span class="lab"><b>$5,000 – $20,000</b></span></button>
+      <button class="opt" data-val="35000"><span class="ico">$$$</span><span class="lab"><b>$20,000 – $50,000</b></span></button>
+      <button class="opt" data-val="75000"><span class="ico">$$$$</span><span class="lab"><b>$50,000+</b></span></button>
+    </div>
+    <div class="nav">
+      <button class="btn ghost" data-back>← Back</button>
+      <button class="btn" data-next disabled>Continue →</button>
+    </div>
+  </section>
+
+  <!-- STEP 4 — GOAL question (the branch) -->
+  <section class="step" data-step="4">
+    <div class="qnum">Question 04 · What matters to you</div>
+    <div class="qtitle">When it comes to card rewards, what matters most?</div>
+    <div class="qhint">This changes everything we recommend — pick the honest one.</div>
+    <div class="opts" data-single="goal">
+      <button class="opt" data-val="cash"><span class="ico">💵</span><span class="lab"><b>Cash in my pocket</b><span>Keep it simple — just earn me money</span></span></button>
+      <button class="opt" data-val="travel"><span class="ico">✈️</span><span class="lab"><b>Free travel</b><span>I'd love trips paid for by my spending</span></span></button>
+      <button class="opt" data-val="both"><span class="ico">⚖️</span><span class="lab"><b>Whatever earns the most</b><span>I'm open — show me the best overall</span></span></button>
+    </div>
+    <div class="nav">
+      <button class="btn ghost" data-back>← Back</button>
+      <button class="btn" data-next disabled>Continue →</button>
+    </div>
+  </section>
+
+  <!-- STEP 5 — spend by category -->
+  <section class="step" data-step="5">
+    <div class="qnum">Question 05 · Where it goes</div>
+    <div class="qtitle">Roughly how is that monthly spend split?</div>
+    <div class="qhint">Drag to your best estimate. This is the heart of the audit.</div>
+    <div id="sliders"></div>
+    <div class="runtot" id="runtot">Allocated: $0 / mo</div>
+    <div class="nav">
+      <button class="btn ghost" data-back>← Back</button>
+      <button class="btn" data-next>Continue →</button>
+    </div>
+  </section>
+
+  <!-- STEP 6 — current cards (multi-select) -->
+  <section class="step" data-step="6">
+    <div class="qnum">Question 06 · Your baseline</div>
+    <div class="qtitle">Which cards does your business use now?</div>
+    <div class="qhint">Tick any you already have — we'll measure your real gap, and tell you if you're already optimized.</div>
+    <div id="cardChecklist" class="opts"></div>
+    <div class="nav">
+      <button class="btn ghost" data-back>← Back</button>
+      <button class="btn" data-next>Continue →</button>
+    </div>
+  </section>
+
+  <!-- STEP 7 — aspiration (travel/both only; cash skips) -->
+  <section class="step" data-step="7">
+    <div class="qnum">Question 07 · The payoff</div>
+    <div class="qtitle">If points could take you anywhere, where would you go?</div>
+    <div class="qhint">We'll show you what your spending could actually book.</div>
+    <input type="text" id="dream" placeholder="e.g. Japan, Italy, Hawaii, a family trip…">
+    <div class="nav">
+      <button class="btn ghost" data-back>← Back</button>
+      <button class="btn" data-next>Continue →</button>
+    </div>
+  </section>
+
+  <!-- STEP 8 — calculate -->
+  <section class="step" data-step="8">
+    <div class="qnum">Question 08 · Almost there</div>
+    <div class="qtitle">That's everything we need.</div>
+    <div class="qhint">We'll show your number and which cards fit your spending.</div>
+    <div class="nav">
+      <button class="btn ghost" data-back>← Back</button>
+      <button class="btn wide" id="calcBtn">Show me my results →</button>
+    </div>
+  </section>
+
+  <!-- REVEAL -->
+  <section class="step" data-step="9">
+    <div class="reveal-eyebrow" id="rev-eyebrow">Your audit · estimated</div>
+    <div class="bignum">
+      <span id="rev-label">You're leaving roughly</span>
+      <span class="amt mono" id="rev-amount">$0</span>
+      <span class="per">on the table / year</span>
+    </div>
+    <div class="reveal-line" id="rev-line"></div>
+    <div id="rev-doingwell" style="display:none;background:#f0f6f1;border:1px solid var(--green);border-left:4px solid var(--green);padding:13px 16px;margin:16px 0;font-size:15px;color:var(--green-deep);text-align:center"></div>
+    <table class="ledger-table" id="rev-table"></table>
+    <div class="flag" id="rev-flag" style="display:none"></div>
+    <div class="disc" id="rev-disc"></div>
+
+    <div class="cta-box" id="cta-box"></div>
+
+    <div style="border-top:1px solid var(--rule);margin-top:22px;padding-top:20px">
+      <div style="background:#f0f6f1;border:1px solid var(--green);padding:20px 18px;text-align:center">
+        <h3 style="font-size:19px;margin-bottom:8px">Want help actually setting this up?</h3>
+        <p style="font-size:14.5px;color:var(--muted);margin-bottom:16px;max-width:44ch;margin:0 auto 16px">
+          Applying for the right cards, moving your spend over, and timing the bonuses can be a hassle to do alone. Leave your email and we'll reach out about a done-with-you setup — no obligation.
+        </p>
+        <div style="display:flex;gap:8px;max-width:380px;margin:0 auto">
+          <input type="text" id="email" placeholder="you@yourbusiness.com" style="flex:1">
+          <button class="btn" id="emailBtn" style="white-space:nowrap">Contact me</button>
+        </div>
+        <div id="emailMsg" style="font-size:13px;color:var(--green-deep);margin-top:8px;height:16px"></div>
+        <div style="font-size:12px;color:var(--muted);margin-top:4px;font-style:italic">No spam — we'll only use this to talk about setting up your rewards.</div>
+      </div>
+    </div>
+
+    <div class="nav" style="justify-content:center;margin-top:20px">
+      <button class="btn ghost" id="restart">Run it again</button>
+    </div>
+
+    <footer class="fine">
+      Trade Kickback · conservative estimates based on your inputs, not a guarantee.<br>
+      Verify current card terms before applying — they change often.
+    </footer>
+  </section>
+
+</div>
+
+<script>
+// ---------- state ----------
+const SUPABASE_URL = 'https://xwkxhkocjgczekhpiroq.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh3a3hoa29jamdjemVraHBpcm9xIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI3MzU2NDAsImV4cCI6MjA5ODMxMTY0MH0.UDT_Yxvs3riUNS5X2yA1JpzPU0xmfWYp2DKEmvblE74';
+
+async function logSubmission(row){
+  try{
+    const res = await fetch(SUPABASE_URL+'/rest/v1/ledger_submissions',{
+      method:'POST',
+      headers:{
+        'apikey':SUPABASE_ANON,
+        'Authorization':'Bearer '+SUPABASE_ANON,
+        'Content-Type':'application/json',
+        'Prefer':'return=minimal'
+      },
+      body:JSON.stringify(row)
+    });
+    if(!res.ok){
+      const txt = await res.text();
+      console.error('Supabase insert failed:', res.status, txt);
+    } else {
+      console.log('Supabase insert OK:', res.status);
+    }
+  }catch(e){ console.error('Supabase insert error (network/CORS?):', e); }
+}
+
+const S = { biztype:'', years:'', spend:0, goal:'', cur:1.0, held:[],
+            dream:'', route:'', fname:'', email:'', cats:{} };
+let cur = 1;
+let lastResult = null;
+const TOTAL_VISIBLE = 8; // questionnaire steps shown in progress
+
+const CATS = [
+  {key:'advertising', name:'Advertising', hint:'Google, Facebook, etc.', w:0.10},
+  {key:'materials',   name:'Materials / supplies / inventory', hint:'', w:0.30},
+  {key:'travel',      name:'Travel', hint:'flights, hotels, car', w:0.08},
+  {key:'shipping',    name:'Shipping / freight', hint:'', w:0.07},
+  {key:'software',    name:'Software / phone / utilities', hint:'', w:0.10},
+  {key:'dining',      name:'Dining / general', hint:'', w:0.10},
+  {key:'other',       name:'Everything else', hint:'', w:0.25},
+];
+
+// ---------- helpers ----------
+const $ = s => document.querySelector(s);
+const $$ = s => Array.from(document.querySelectorAll(s));
+const money = n => '$' + Math.round(n).toLocaleString('en-US');
+
+function show(step){
+  $$('.step').forEach(el=>el.classList.toggle('active', +el.dataset.step===step));
+  cur = step;
+  // progress bar only shows during the questionnaire (steps 1–8), not landing(0) or results(9+)
+  const pb = document.getElementById('progressBar');
+  if(pb) pb.style.display = (step>=1 && step<=TOTAL_VISIBLE) ? 'flex' : 'none';
+  const shown = Math.min(Math.max(step,1), TOTAL_VISIBLE);
+  $('#pstep').textContent = String(shown).padStart(2,'0');
+  $('#pfill').style.width = (shown/TOTAL_VISIBLE*100)+'%';
+  // Re-enable the Continue button if this step is already satisfied
+  // (so going Back and Forward never traps the user).
+  const stepEl = document.querySelector('.step[data-step="'+step+'"]');
+  if(stepEl){
+    const nxt = stepEl.querySelector('[data-next]');
+    if(nxt){
+      const hasSelection = stepEl.querySelector('.opt.sel');     // any answered option group
+      const sliderStep = step===5;                               // sliders are always valid
+      const dropdownStep = step===1;                             // biztype validated on advance
+      const textStep = step===6 || step===7 || step===8;          // card checklist / dream / calc are optional
+      if(hasSelection || sliderStep || dropdownStep || textStep) nxt.disabled = false;
+    }
+  }
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// single-select option groups
+$$('[data-single]').forEach(group=>{
+  group.addEventListener('click', e=>{
+    const opt = e.target.closest('.opt'); if(!opt) return;
+    group.querySelectorAll('.opt').forEach(o=>o.classList.remove('sel'));
+    opt.classList.add('sel');
+    const field = group.dataset.single;
+    const val = opt.dataset.val;
+    if(field==='spend') S.spend = +val;
+    else if(field==='goal') S.goal = val;
+    else if(field==='years') S.years = val;
+    else if(field==='hoard') S.hoard = val;
+    else if(field==='route'||field==='route2') S.route = val;
+    // enable that step's next button
+    const step = group.closest('.step');
+    const nxt = step.querySelector('[data-next]');
+    if(nxt) nxt.disabled = false;
+  });
+});
+
+// nav buttons
+$$('[data-next]').forEach(b=> b.addEventListener('click', ()=>advance()));
+$$('[data-back]').forEach(b=> b.addEventListener('click', ()=>back()));
+
+function advance(){
+  // capture step-specific inputs + branch logic
+  if(cur===1){ S.biztype=$('#biztype').value; if(!S.biztype){flash('#biztype');return;} }
+  if(cur===4){ buildSliders(); }      // goal known -> build sliders (weighted)
+  if(cur===5){ buildChecklist(); }    // build held-cards checklist before showing step 6
+  if(cur===6){ /* held cards captured live via checklist clicks */ }
+  if(cur===7){ S.dream = $('#dream').value.trim(); }
+  // cash path has no dream question — skip step 7
+  if(cur===6 && S.goal==='cash'){ show(8); return; }
+  show(cur+1);
+}
+function back(){
+  // mirror the skip when going back over step 7 on the cash path
+  if(cur===8 && S.goal==='cash'){ show(6); return; }
+  show(cur-1);
+}
+
+function flash(sel){ const el=$(sel); el.style.outline='2px solid var(--red)'; setTimeout(()=>el.style.outline='',900); }
+
+// build category sliders, seeded by spend + goal weighting
+function buildSliders(){
+  const box = $('#sliders'); box.innerHTML='';
+  const base = S.spend||5000;
+  CATS.forEach(c=>{
+    let w = c.w;
+    // nudge weighting by goal so it feels personalized
+    if(S.goal!=='cash' && (c.key==='travel')) w += 0.04;
+    const seed = Math.round(base*w/50)*50;
+    S.cats[c.key]=seed;
+    const row=document.createElement('div');
+    row.className='slider-row';
+    row.innerHTML=`
+      <div class="slider-head">
+        <span class="name">${c.name}${c.hint?`<small>${c.hint}</small>`:''}</span>
+        <span class="val mono" id="v_${c.key}">${money(seed)}</span>
+      </div>
+      <input type="range" min="0" max="${Math.max(base*1.2,2000)}" step="50" value="${seed}" data-cat="${c.key}">`;
+    box.appendChild(row);
+  });
+  box.querySelectorAll('input[type=range]').forEach(r=>{
+    r.addEventListener('input', ()=>{
+      const k=r.dataset.cat; S.cats[k]=+r.value;
+      $('#v_'+k).textContent=money(+r.value);
+      const tot=Object.values(S.cats).reduce((a,b)=>a+b,0);
+      $('#runtot').textContent='Allocated: '+money(tot)+' / mo';
+    });
+  });
+  const tot=Object.values(S.cats).reduce((a,b)=>a+b,0);
+  $('#runtot').textContent='Allocated: '+money(tot)+' / mo';
+}
+
+// build the "which cards do you hold now" multi-select checklist
+function buildChecklist(){
+  const box = $('#cardChecklist');
+  if(box.dataset.built) return;   // build once
+  box.dataset.built = '1';
+  // "none" option first
+  const mk = (id,label,sub)=>{
+    const b=document.createElement('button');
+    b.className='opt'; b.dataset.card=id;
+    b.innerHTML=`<span class="ico">☐</span><span class="lab"><b>${label}</b>${sub?`<span>${sub}</span>`:''}</span>`;
+    b.addEventListener('click',()=>{
+      const on = b.classList.toggle('sel');
+      b.querySelector('.ico').textContent = on?'☑':'☐';
+      if(id==='none'){
+        // selecting "none" clears all others
+        if(on){ box.querySelectorAll('.opt').forEach(o=>{ if(o!==b){o.classList.remove('sel');o.querySelector('.ico').textContent='☐';} }); S.held=['none']; }
+        else S.held=[];
+      } else {
+        // selecting a real card clears "none"
+        const noneBtn=box.querySelector('[data-card="none"]');
+        if(noneBtn){noneBtn.classList.remove('sel');noneBtn.querySelector('.ico').textContent='☐';}
+        S.held = [...box.querySelectorAll('.opt.sel')].map(o=>o.dataset.card).filter(x=>x!=='none');
+      }
+    });
+    return b;
+  };
+  box.appendChild(mk('none','A basic card / no rewards card','debit or plain bank card'));
+  CARDS.forEach(c=> box.appendChild(mk(c.id, c.name, c.issuer+(c.fee?` · $${c.fee}/yr`:' · $0'))));
+}
+
+// ---------- VERIFIED CARD DATABASE (June 2026) ----------
+// rate = points/cash multiplier per $; cap = annual $ cap on bonus categories (shared) or null;
+// ptval = cents/point used for value (cash cards = 1.0; points cards conservative);
+// cats = per-category multiplier. Categories: advertising, travel, shipping, software (office/telecom),
+//        dining, gas, other. Unlisted = base (1).
+// bonus = {amt, spend, type:'flat'|'tiered'|'targeted'}. Targeted shown as "up to".
+// Conservative bias: where a category isn't an explicit bonus category, it earns the card's base rate.
+const CARDS = [
+  {id:'spark_plus', name:'Capital One Spark Cash Plus', issuer:'Capital One', fee:150, ptval:1.0, kind:'cash',
+   base:2, cats:{}, cap:null,
+   bonus:{amt:2000,spend:30000,type:'tiered',note:'$2,000 after $30k/3mo (+$2k per $500k)'} },
+  {id:'venturex', name:'Capital One Venture X Business', issuer:'Capital One', fee:395, ptval:1.8, kind:'points',
+   base:2, cats:{}, cap:null,
+   bonus:{amt:150000,spend:30000,type:'flat',unit:'miles',note:'150,000 miles after $30k/3mo'} },
+  {id:'ink_unl', name:'Chase Ink Business Unlimited', issuer:'Chase', fee:0, ptval:1.9, kind:'points',
+   base:1.5, cats:{}, cap:null,
+   bonus:{amt:1000,spend:8000,type:'flat',note:'$1,000 after $8k/4mo'} },
+  {id:'boa_unl', name:'BofA Business Advantage Unlimited Cash', issuer:'BofA', fee:0, ptval:1.0, kind:'cash',
+   base:1.5, cats:{}, cap:null,
+   bonus:{amt:500,spend:5000,type:'flat',note:'$500 after $5k/90d'} },
+  {id:'blue_plus', name:'Amex Blue Business Plus', issuer:'Amex', fee:0, ptval:1.8, kind:'points',
+   base:2, cats:{}, cap:50000, capNote:'2x on all up to $50k/yr then 1x',
+   bonus:{amt:15000,spend:3000,type:'flat',unit:'points',note:'15,000 pts after $3k/3mo'} },
+  {id:'blue_cash', name:'Amex Blue Business Cash', issuer:'Amex', fee:0, ptval:1.0, kind:'cash',
+   base:2, cats:{}, cap:50000, capNote:'2% on all up to $50k/yr then 1%',
+   bonus:{amt:250,spend:3000,type:'flat',note:'$250 after $3k/3mo'} },
+  {id:'ink_cash', name:'Chase Ink Business Cash', issuer:'Chase', fee:0, ptval:1.9, kind:'points',
+   base:1, cats:{software:5, dining:2, gas:2}, cap:25000, capNote:'5% office/telecom + 2% gas/dining to $25k combined',
+   bonus:{amt:1000,spend:8000,type:'flat',note:'$1,000 after $8k/4mo'} },
+  {id:'ink_pref', name:'Chase Ink Business Preferred', issuer:'Chase', fee:95, ptval:1.9, kind:'points',
+   base:1, cats:{advertising:3, travel:3, shipping:3, software:3}, cap:150000, capNote:'3x on travel/shipping/internet-phone/ads to $150k combined',
+   bonus:{amt:1000,spend:10000,type:'flat',note:'$1,000 (100k pts) after $10k/3mo'} },
+  {id:'csr_biz', name:'Chase Sapphire Reserve for Business', issuer:'Chase', fee:795, ptval:2.0, kind:'points',
+   base:1, cats:{advertising:3, travel:4}, cap:null, capNote:'3x ads UNCAPPED; 4x travel direct (8x via portal)',
+   bonus:{amt:200000,spend:30000,type:'flat',unit:'points',note:'200,000 pts after $30k/6mo'} },
+  {id:'amex_gold', name:'Amex Business Gold', issuer:'Amex', fee:375, ptval:1.8, kind:'points',
+   base:1, cats:{advertising:4, gas:4, dining:4, software:4}, cap:150000, capNote:'4x on top 2 categories to $150k',
+   topN:2, // only best 2 categories get 4x
+   bonus:{amt:200000,spend:15000,type:'targeted',unit:'points',note:'up to 200,000 pts after $15k/3mo (varies)'} },
+  {id:'amex_plat', name:'Amex Business Platinum', issuer:'Amex', fee:895, ptval:1.8, kind:'points',
+   base:1, cats:{travel:5}, cap:null, capNote:'5x flights/prepaid hotels via Amex Travel; weak everyday',
+   bonus:{amt:300000,spend:20000,type:'targeted',unit:'points',note:'up to 300,000 pts after $20k/3mo (varies)'} },
+  {id:'boa_custom', name:'BofA Business Advantage Customized Cash', issuer:'BofA', fee:0, ptval:1.0, kind:'cash',
+   base:1, cats:{advertising:3, dining:2}, cap:50000, capNote:'3% chosen category + 2% dining to $50k combined',
+   bonus:{amt:500,spend:5000,type:'flat',note:'$500 after $5k/90d'} },
+];
+
+// value (in $) a card earns on `amt` of spend in `category`, respecting its cap.
+// ptvalOverride: when set (e.g. cash goal), value all points at this rate (cents) instead of card.ptval.
+function cardEarnOnCategory(card, category, amt, capState, ptvalOverride){
+  const ptval = (ptvalOverride!=null && card.kind==='points') ? ptvalOverride : card.ptval;
+  let mult = card.cats[category] != null ? card.cats[category] : card.base;
+  // Amex Gold special: only top-2 categories get 4x — handled by caller marking allowed cats
+  if(card.id==='amex_gold' && card._allowed && !card._allowed.has(category)) mult = card.base;
+  // apply shared cap if this is a bonus-category multiplier above base
+  if(card.cap != null && mult > card.base){
+    const remaining = Math.max(card.cap - (capState[card.id]||0), 0);
+    const atBonus = Math.min(amt, remaining);
+    const atBase = amt - atBonus;
+    capState[card.id] = (capState[card.id]||0) + atBonus;
+    return (atBonus*mult + atBase*card.base) * ptval/100;
+  }
+  // Blue cards cap their flat base too (2x to $50k)
+  if(card.cap != null && mult === card.base && (card.id==='blue_plus'||card.id==='blue_cash')){
+    const remaining = Math.max(card.cap - (capState[card.id]||0), 0);
+    const atBonus = Math.min(amt, remaining);
+    const atBase = amt - atBonus;
+    capState[card.id] = (capState[card.id]||0) + atBonus;
+    return (atBonus*card.base + atBase*1) * ptval/100;
+  }
+  return amt * mult * ptval/100;
+}
+
+// ---------- the calculation: real per-category optimizer ----------
+function calc(){
+  const annual = {};
+  let totalAnnual = 0;
+  for(const c of CATS){ annual[c.key]=(S.cats[c.key]||0)*12; totalAnnual+=annual[c.key]; }
+
+  // Goal affects how points are valued, not which cards exist.
+  // Cash goal: value all points at cash redemption (1c). Travel/both: use each card's travel ptval.
+  const ptvalOverride = (S.goal==='cash') ? 1.0 : null;
+  // Pool: cash goal still prefers cash cards for new recommendations, but held points cards
+  // must remain evaluable (so a cash-seeker holding points cards is judged honestly).
+  let pool = CARDS.filter(c=>{
+    if(S.goal==='cash') return c.kind==='cash' || S.held.includes(c.id);
+    return true;
+  });
+
+  // Amex Gold: pre-compute its best-2 categories for THIS user so 4x applies correctly
+  const gold = pool.find(c=>c.id==='amex_gold');
+  if(gold){
+    const goldCats = ['advertising','gas','dining','software'];
+    const ranked = goldCats.map(cat=>({cat, spend:annual[cat]||0})).sort((a,b)=>b.spend-a.spend);
+    gold._allowed = new Set(ranked.slice(0,gold.topN).map(x=>x.cat));
+  }
+
+  // For each category, find the card (from a given pool) that yields the most $, cap-aware.
+  function bestSetupFrom(cardPool){
+    const capState = {};
+    const perCat = {};
+    let total = 0;
+    const used = new Set();
+    const order = [...CATS].sort((a,b)=>(annual[b.key]||0)-(annual[a.key]||0));
+    for(const c of order){
+      const spend = annual[c.key]||0;
+      if(spend<=0){ continue; }
+      let best=null;
+      for(const card of cardPool){
+        const test = {...capState};
+        const val = cardEarnOnCategory(card, c.key, spend, test, ptvalOverride);
+        if(!best || val>best.val){ best={card, val}; }
+      }
+      if(best){
+        cardEarnOnCategory(best.card, c.key, spend, capState, ptvalOverride);
+        perCat[c.key] = {card:best.card, val:best.val, spend};
+        total += best.val;
+        used.add(best.card.id);
+      }
+    }
+    return {perCat, total, used:[...used]};
+  }
+  const feesOf = ids => ids.reduce((s,id)=>{const c=CARDS.find(x=>x.id===id);return s+(c?c.fee:0);},0);
+
+  // CURRENT setup — optimal routing across cards they ALREADY hold (held fees are sunk).
+  const heldCards = CARDS.filter(c=>S.held.includes(c.id));
+  let currentNet, currentGross, currentFees, currentSetup=null, holdsRealCards = heldCards.length>0;
+  if(holdsRealCards){
+    currentSetup = bestSetupFrom(heldCards);
+    currentFees = feesOf(currentSetup.used);
+    currentGross = currentSetup.total;
+    currentNet = currentGross - currentFees;
+  } else {
+    currentGross = totalAnnual * 1.0/100;
+    currentNet = currentGross; currentFees = 0;
+  }
+
+  // OPTIMAL setup, chosen on NET value.
+  // Start from the gross-greedy setup, then drop any NON-HELD card whose marginal
+  // contribution doesn't cover its annual fee (route its categories to the next-best card instead).
+  // Held cards are always allowed (their fee is already paid).
+  function netOptimalSetup(){
+    // candidate pool: always allow held cards + no-fee cards; fee cards must justify themselves.
+    let allowed = pool.filter(c => c.fee===0 || S.held.includes(c.id));
+    // iteratively try adding each fee card; keep it only if it improves NET total.
+    const feeCards = pool.filter(c => c.fee>0 && !S.held.includes(c.id));
+    let baseSetup = bestSetupFrom(allowed);
+    let baseNet = baseSetup.total - feesOf(baseSetup.used.filter(id=>{const c=CARDS.find(x=>x.id===id);return c.fee>0 && !S.held.includes(id);}));
+    let improved = true;
+    while(improved){
+      improved = false;
+      let bestCard=null, bestSetup=null, bestNet=baseNet;
+      for(const fc of feeCards){
+        if(allowed.includes(fc)) continue;
+        const trial = [...allowed, fc];
+        const ts = bestSetupFrom(trial);
+        // net = gross - fees of all non-held fee cards actually used
+        const usedFeeCards = ts.used.filter(id=>{const c=CARDS.find(x=>x.id===id);return c.fee>0 && !S.held.includes(id);});
+        const tnet = ts.total - feesOf(usedFeeCards);
+        if(tnet > bestNet + 0.01){ bestNet=tnet; bestCard=fc; bestSetup=ts; }
+      }
+      if(bestCard){ allowed=[...allowed,bestCard]; baseSetup=bestSetup; baseNet=bestNet; improved=true; }
+    }
+    return baseSetup;
+  }
+  const setup = netOptimalSetup();
+  const feeTotal = feesOf(setup.used);
+  const achievableGross = setup.total;
+  const achievable = achievableGross - feeTotal;
+
+  const curBack = currentNet; // baseline for display
+
+  // ongoing gap = optimal net - current net
+  const ongoingGap = Math.max(achievable - currentNet, 0);
+
+  // signup bonuses: ONLY for optimal cards they DON'T already hold (can't re-earn held cards)
+  let bonusTotal = 0; const bonusList = [];
+  for(const id of setup.used){
+    if(S.held.includes(id)) continue; // already hold it -> no new bonus
+    const card = CARDS.find(c=>c.id===id);
+    if(card.bonus){
+      const b = card.bonus;
+      const val = (b.unit==='points'||b.unit==='miles') ? b.amt*card.ptval/100 : b.amt;
+      bonusTotal += val;
+      bonusList.push({card, bonus:b, val});
+    }
+  }
+
+  // ---- WILD CARDS ----
+  // A wild card is a card that's NOT worth holding for ongoing earning (its fee outweighs the
+  // extra value it'd add for THIS user), is NOT already held, but has a big enough signup bonus
+  // to be worth considering for year one. Only surfaced when the main result has little ongoing
+  // upside (otherwise the user already has plenty to act on).
+  const wildCards = [];
+  for(const card of pool){
+    if(setup.used.includes(card.id)) continue;   // already in the net-optimal setup -> it IS worth holding
+    if(S.held.includes(card.id)) continue;        // already hold it (can't re-earn bonus)
+    if(!card.bonus) continue;
+    if(card.fee === 0) continue;                  // no-fee cards can't be "fee-losing" -> never a wild card
+    const bval = (card.bonus.unit==='points'||card.bonus.unit==='miles') ? card.bonus.amt*card.ptval/100 : card.bonus.amt;
+    if(bval < 1500) continue;                     // bonus must be material
+    // genuine fee-loser test: how much EXTRA ongoing value would this card add vs the optimal setup,
+    // and does that fail to cover its fee? (If it would have helped, it'd already be in setup.used.)
+    const trial = bestSetupFrom([...pool.filter(c=>setup.used.includes(c.id)||S.held.includes(c.id)||c.fee===0), card]);
+    const extraGross = trial.total - setup.total;
+    const coversFee = extraGross >= card.fee;
+    if(coversFee) continue;                        // it actually pays for itself -> not a wild card (shouldn't happen, but safe)
+    wildCards.push({card, bonusVal:bval, ongoingShortfall: card.fee - extraGross});
+  }
+  wildCards.sort((a,b)=>b.bonusVal-a.bonusVal);
+  let wildTop = wildCards.slice(0,2);
+
+  // Are they already essentially optimized? (optimal uses only cards they hold, gap tiny)
+  const newCardsNeeded = setup.used.filter(id=>!S.held.includes(id));
+  const alreadyOptimized = holdsRealCards && newCardsNeeded.length===0 && ongoingGap < (totalAnnual*0.0015); // <0.15% of spend
+
+  // Only surface wild cards when ongoing upside is LOW (optimized / doing-well situations).
+  // If the main result already shows a big ongoing gain, suppress them as noise.
+  const lowOngoing = ongoingGap < (totalAnnual * 0.005); // same 0.5% "doing well" threshold
+  if(!lowOngoing) wildTop = [];
+
+  const year1Gap = ongoingGap + bonusTotal;
+  const mode = S.goal==='cash' ? 'cash' : (S.goal==='both' ? 'both' : 'travel');
+
+  return {annual, totalAnnual, curBack, currentNet, currentGross,
+          achievable, achievableGross, feeTotal,
+          ongoingGap, bonusTotal, bonusList, year1Gap, setup, currentSetup,
+          heldCards, holdsRealCards, newCardsNeeded, alreadyOptimized,
+          wildCards:wildTop, mode, gap:ongoingGap, ptvalOverride};
+}
+
+// build the recommended setup list from the optimizer result
+function recommend(r){
+  const recs = [];
+  const byCard = {};
+  for(const [cat, info] of Object.entries(r.setup.perCat)){
+    const id = info.card.id;
+    if(!byCard[id]) byCard[id] = {card:info.card, cats:[], earned:0, spend:0};
+    byCard[id].cats.push(cat); byCard[id].earned += info.val; byCard[id].spend += info.spend;
+  }
+  // Per-card economics, built to RECONCILE with the headline ongoing gain.
+  // For each card: grossEarn (what it earns), fee, and the "current baseline" earning on
+  // the same spend (what their held cards / 1% would earn there). Net extra = grossEarn - baseline - fee.
+  // Held cards: baseline == grossEarn (you already earn this) so their extra is just -fee... but
+  // held fees are already sunk, so we treat held-card extra as 0 and don't subtract their fee again.
+  const held = CARDS.filter(c=>S.held.includes(c.id));
+  function baselineEarn(cats, spendByCat){
+    let cur = 0;
+    for(const cat of cats){
+      const spend = spendByCat[cat]||0;
+      if(held.length){
+        let best=0;
+        for(const hc of held){ const t={}; const v=cardEarnOnCategory(hc, cat, spend, t, r.ptvalOverride); if(v>best)best=v; }
+        cur += best;
+      } else {
+        cur += spend * 1.0/100;
+      }
+    }
+    return cur;
+  }
+  const ordered = Object.values(byCard).map(g=>{
+    const isHeldCard = S.held.includes(g.card.id);
+    g.isHeldCard = isHeldCard;
+    if(isHeldCard){
+      // already holding it — its earnings are already in "earning now"; contributes 0 to the gain.
+      g.currentEarn = g.earned;
+      g.gain = 0;
+      g.net = g.earned;            // net shown is just what it earns (fee already sunk)
+    } else {
+      // NEW card: baseline = what held cards earn on this spend; extra = earn - baseline - fee.
+      const spendByCat = {};
+      for(const cat of g.cats) spendByCat[cat] = r.annual[cat]||0;
+      g.currentEarn = baselineEarn(g.cats, spendByCat);
+      const grossGain = g.earned - g.currentEarn;
+      g.gain = grossGain - g.card.fee;   // NET extra (after this card's fee) — reconciles with headline
+      g.net = g.earned - g.card.fee;
+    }
+    return g;
+  }).sort((a,b)=>b.net-a.net);
+
+  // Reconcile rounding: make the sum of new-card net gains equal the headline ongoingGap exactly.
+  const newCards = ordered.filter(g=>!g.isHeldCard);
+  const sumGain = newCards.reduce((s,g)=>s+g.gain,0);
+  if(newCards.length && Math.abs(sumGain - r.ongoingGap) > 0.5){
+    const adj = (r.ongoingGap - sumGain) / newCards.length;
+    for(const g of newCards) g.gain += adj;   // distribute the small reconciliation remainder
+  }
+  // never display a negative extra
+  for(const g of ordered){ if(!g.isHeldCard && g.gain < 0) g.gain = 0; }
+  for(const g of ordered){
+    const c = g.card;
+    const catNames = g.cats.map(prettyCat).join(', ');
+    const feeStr = c.fee===0 ? '$0' : '$'+c.fee+'/yr';
+    recs.push({
+      name:c.name, fee:feeStr, feeNum:c.fee,
+      cats:catNames,
+      capNote: c.capNote || (c.base+(c.kind==='cash'?'%':'x')+' on everything'),
+      spend:g.spend, currentEarn:g.currentEarn, newEarn:g.earned, gain:g.gain,
+      bonus: c.bonus ? c.bonus.note : '', bonusType: c.bonus ? c.bonus.type : '',
+      kind:c.kind, net:g.net, isHeld: S.held.includes(c.id)
+    });
+  }
+  return recs;
+}
+
+function prettyCat(k){
+  return ({advertising:'Advertising', travel:'Travel', shipping:'Shipping',
+           software:'Office/Software/Telecom', dining:'Dining', gas:'Gas',
+           materials:'Materials', other:'Everything else'})[k] || k;
+}
+
+// reusable wild-card section (used in both the optimized screen and the main reveal)
+function wildCardHtml(r){
+  if(!r.wildCards || !r.wildCards.length) return '';
+  let html = `<div style="margin-top:22px;border-top:2px dashed var(--gold);padding-top:16px">
+    <h3 style="text-align:center;margin-bottom:2px;color:var(--gold)">🃏 Wild card${r.wildCards.length>1?'s':''}</h3>
+    <p style="text-align:center;color:var(--muted);font-size:13px;margin-bottom:14px;font-style:italic">These cost more in fees than they earn you year-to-year for your spending — but the one-time signup bonus can make them worth considering for year one if the card suits you.</p>`;
+  for(const w of r.wildCards){
+    const c = w.card;
+    const isPoints = c.bonus.unit==='points'||c.bonus.unit==='miles';
+    const valStr = isPoints ? `up to ${money(w.bonusVal)} in travel value` : `${money(w.bonusVal)}`;
+    html += `<div style="border:1px solid var(--gold);background:#fdf9f0;padding:15px 16px;margin-bottom:10px;text-align:left">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px">
+        <b style="font-size:16px">${c.name}</b>
+        <span class="mono" style="font-size:12px;color:var(--muted);white-space:nowrap">${c.fee?'$'+c.fee+'/yr':'$0'}</span>
+      </div>
+      <div style="font-size:13px;color:var(--green-deep);margin-top:8px">🎁 ${c.bonus.note}</div>
+      <div style="font-size:13px;color:var(--muted);margin-top:6px">Bonus worth <b>${valStr}</b>${isPoints?' (points — redeemed well for travel; less as cash)':''}.${c.bonus.type==='targeted'?' <span style="font-style:italic">Targeted offer — your actual amount may be lower.</span>':''}</div>
+      <div style="font-size:12px;color:var(--muted);margin-top:8px;font-style:italic">⚠️ For your spending, the ongoing rewards don't cover the ${money(c.fee)} annual fee — so weigh whether the bonus and the card's perks are worth it for year one.</div>
+    </div>`;
+  }
+  html += `</div>`;
+  return html;
+}
+
+// ---------- render reveal ----------
+function renderReveal(){
+  const r = calc();
+
+  // ---- ALREADY OPTIMIZED branch ----
+  if(r.alreadyOptimized){
+    $('#rev-eyebrow').textContent = 'Your audit · result';
+    $('#rev-label').textContent = "Good news —";
+    $('#rev-amount').textContent = "You're optimized";
+    $('#rev-amount').style.fontSize = '34px';
+    $('#rev-amount').style.color = 'var(--green-deep)';
+    document.querySelector('.bignum .per').style.display='none';
+    // caveat comes FIRST, as the setup for the routing advice that follows
+    $('#rev-line').innerHTML = `You already hold the right cards for your spending — you're ahead of most business owners, and there's little to no value in adding more. <strong>One catch: this assumes you're routing each type of spend to the best card you hold. Most people aren't.</strong> Here's how to make sure you are:`;
+    // routing guidance table
+    const t = $('#rev-table'); t.innerHTML='';
+    const rows = Object.entries(r.setup.perCat).map(([cat,info])=>
+      `<tr><td>${prettyCat(cat)}</td><td style="text-align:right">${info.card.name.replace('Business','Biz')}</td></tr>`).join('');
+    t.innerHTML = `<tr class="tot"><td>Spend type</td><td style="text-align:right">Put it on…</td></tr>${rows}`;
+    $('#rev-flag').style.display='none';
+    $('#rev-disc').innerHTML = 'Based on the cards you told us you hold. A full audit confirms exact routing and any edge cases.';
+    // cta box: routing summary + wild cards (optimized people may still want a bonus play)
+    let box = `<p style="text-align:center;color:var(--muted);font-size:14px">Nothing to buy for everyday spend — just route as above and you're capturing the value.</p>`;
+    box += wildCardHtml(r);
+    $('#cta-box').innerHTML = box;
+    lastResult = r;
+    return r;
+  }
+
+  // headline = year-1 (the big number incl. bonuses)
+  $('#rev-amount').textContent = money(r.year1Gap);
+  $('#rev-amount').style.fontSize = '';
+  $('#rev-amount').style.color = '';
+  const perEl = document.querySelector('.bignum .per'); if(perEl) perEl.style.display='';
+
+  let line='', disc='';
+  const dream = S.dream || 'somewhere good';
+
+  if(r.mode==='cash'){
+    $('#rev-label').textContent = `In year one, you're leaving roughly`;
+    line = `That's <span class="hl">${money(r.year1Gap)}</span> in year one — including <span class="hl">${money(r.bonusTotal)}</span> in signup bonuses — then about <span class="hl">${money(r.ongoingGap)}/yr</span> ongoing. Real cash, guaranteed.`;
+    disc = 'Guaranteed cash-back estimate. Signup bonuses require hitting minimum spend.';
+  } else if(r.mode==='travel'){
+    $('#rev-label').textContent = `In year one, you could capture up to`;
+    line = `Put toward travel, that's roughly <span class="hl">a trip to ${dream}</span> — funded by spending you already make. Year one includes <span class="hl">${money(r.bonusTotal)}</span> in signup bonuses, then about <span class="hl">${money(r.ongoingGap)}/yr</span> ongoing.`;
+    disc = 'Travel value is an "up to" estimate; capturing it depends on how you redeem. Targeted bonuses (Amex) vary by applicant.';
+  } else {
+    $('#rev-label').textContent = `In year one, you're leaving up to`;
+    line = `About <span class="hl">${money(r.year1Gap)}</span> in year one (incl. <span class="hl">${money(r.bonusTotal)}</span> signup bonuses), then ~<span class="hl">${money(r.ongoingGap)}/yr</span> ongoing. Take it as cash or travel — your call.`;
+    disc = 'Cash is guaranteed; travel value is best-case. Targeted bonuses (Amex) vary by applicant.';
+  }
+  $('#rev-line').innerHTML = line;
+
+  // "You're doing well" compliment: ongoing gain is small relative to their spend.
+  // (Separate from the fully-optimized screen — here there may still be a signup bonus worth grabbing.)
+  const doingWell = r.holdsRealCards && r.ongoingGap < (r.totalAnnual * 0.005); // <0.5% of annual spend
+  const dwEl = $('#rev-doingwell');
+  if(doingWell){
+    let msg = `<strong>You're already doing well.</strong> Your everyday earning is solid — most business owners leave far more on the table than you.`;
+    if(r.bonusTotal > 0){
+      msg += ` The main opportunity left is a one-time <span class="hl">${money(r.bonusTotal)}</span> in signup bonuses below, if you're open to it.`;
+    }
+    if(dwEl){ dwEl.innerHTML = msg; dwEl.style.display='block'; }
+  } else if(dwEl){
+    dwEl.style.display='none';
+  }
+
+  // If they hold rewards cards, the gap assumes they route spend optimally across them — be honest.
+  if(r.holdsRealCards){
+    $('#rev-disc').innerHTML = disc + ' <strong>This assumes you\u2019re already using your cards in the best way \u2014 most people aren\u2019t, and a full audit often finds more.</strong>';
+  } else {
+    $('#rev-disc').textContent = disc;
+  }
+
+  // ledger table — both numbers shown clearly
+  const t = $('#rev-table');
+  t.innerHTML = `
+    <tr><td>Annual card spend</td><td>${money(r.totalAnnual)}</td></tr>
+    <tr><td>Earning now (current card)</td><td class="neg">${money(r.curBack)}</td></tr>
+    <tr><td>Could earn ongoing (rewards)</td><td class="pos">${money(r.achievable)}</td></tr>
+    <tr><td>Ongoing gain / year</td><td class="pos">${money(r.ongoingGap)}</td></tr>
+    <tr><td>Signup bonuses (year 1)</td><td class="pos">${money(r.bonusTotal)}</td></tr>
+    <tr class="tot"><td>Year-one total opportunity</td><td class="pos">${money(r.year1Gap)}</td></tr>`;
+
+  $('#rev-flag').style.display='none';
+
+  // ---- detailed recommendations: two views ----
+  const recs = recommend(r);
+  const cardRow = (c,i) => {
+    const bonusLine = c.bonus && !c.isHeld
+      ? `<div style="font-size:13px;color:var(--green-deep);margin-top:8px">🎁 Signup bonus: ${c.bonus}${c.bonusType==='targeted'?' <span style="font-style:italic">(targeted — your actual offer may be lower)</span>':''}</div>`
+      : '';
+    // held card: show that it's already earning this — $0 EXTRA (not new opportunity)
+    const body = c.isHeld
+      ? `<table style="width:100%;margin-top:10px;font-size:13px;border-collapse:collapse">
+           <tr><td style="padding:3px 0;color:var(--muted)">Spend to route here</td><td class="mono" style="text-align:right">${money(c.spend)}/yr</td></tr>
+           <tr><td style="padding:3px 0;color:var(--muted)">Earning here already</td><td class="mono" style="text-align:right;color:var(--ink)">${money(c.newEarn)}</td></tr>
+           <tr style="border-top:1px solid var(--rule)"><td style="padding:5px 0 0;font-weight:700">Extra per year</td><td class="mono" style="text-align:right;padding-top:5px;font-weight:700;color:var(--muted)">+$0 (already yours)</td></tr>
+         </table>
+         <div style="font-size:13px;color:var(--muted);margin-top:6px;font-style:italic">You already have this card — just make sure your ${c.cats.toLowerCase()} spend goes on it.</div>`
+      : `<table style="width:100%;margin-top:10px;font-size:13px;border-collapse:collapse">
+           <tr><td style="padding:3px 0;color:var(--muted)">Spend in these categories</td><td class="mono" style="text-align:right">${money(c.spend)}/yr</td></tr>
+           <tr><td style="padding:3px 0;color:var(--muted)">Your current cards earn</td><td class="mono" style="text-align:right;color:var(--red)">${money(c.currentEarn)}</td></tr>
+           <tr><td style="padding:3px 0;color:var(--muted)">This card earns</td><td class="mono" style="text-align:right;color:var(--green-deep)">${money(c.newEarn)}</td></tr>
+           ${c.feeNum>0?`<tr><td style="padding:3px 0;color:var(--muted)">Less annual fee</td><td class="mono" style="text-align:right;color:var(--red)">−${money(c.feeNum)}</td></tr>`:''}
+           <tr style="border-top:1px solid var(--rule)"><td style="padding:5px 0 0;font-weight:700">Extra per year (net)</td><td class="mono" style="text-align:right;padding-top:5px;font-weight:700;color:var(--green-deep)">+${money(c.gain)}</td></tr>
+         </table>`;
+    return `
+    <div style="border:1px solid var(--rule);background:#fff;padding:15px 16px;margin-bottom:10px;text-align:left">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px">
+        <b style="font-size:16px">${i+1}. ${c.name}${c.isHeld?' <span style="font-weight:400;font-style:italic;color:var(--muted);font-size:13px">(current card)</span>':''}</b>
+        <span class="mono" style="font-size:12px;color:var(--muted);white-space:nowrap">${c.fee}</span>
+      </div>
+      <div style="font-size:13px;color:var(--muted);margin-top:3px">Put your <b style="color:var(--ink)">${c.cats}</b> spend here — ${c.capNote}.</div>
+      ${body}
+      ${bonusLine}
+    </div>`;
+  };
+
+  const full = recs.map(cardRow).join('');
+  const nFull = recs.length;
+  const nSimple = Math.min(3, nFull);
+  const best = recs.slice(0,nSimple);
+  // best-N total should reflect GAIN over current (not gross earnings)
+  const bestNet = best.reduce((s,c)=>s+c.gain,0);
+  const bestHtml = best.map(cardRow).join('');
+
+  // only show the toggle if the simpler view actually drops cards
+  const showToggle = nFull > nSimple;
+  const totalExtra = recs.filter(c=>!c.isHeld).reduce((s,c)=>s+c.gain,0);
+
+  let html = `<h3 style="text-align:center;margin-bottom:4px">Your card setup</h3>
+    <p style="text-align:center;color:var(--muted);font-size:14px;margin-bottom:14px">The best card for each part of your spending. Fees already netted out.</p>`;
+
+  if(showToggle){
+    html += `<div style="display:flex;gap:8px;margin-bottom:16px">
+      <button class="btn" id="viewFull" style="flex:1;font-size:12px;padding:10px">Full setup (${nFull} cards)</button>
+      <button class="btn ghost" id="viewBest3" style="flex:1;font-size:12px;padding:10px">Simpler (best ${nSimple})</button>
+    </div>
+    <div id="setupFull">${full}
+      ${totalExtra>0?`<div style="border-top:2px solid var(--ink);margin-top:6px;padding-top:10px;display:flex;justify-content:space-between;font-weight:700"><span>Total extra per year</span><span class="mono" style="color:var(--green-deep)">+${money(totalExtra)}</span></div>`:''}
+    </div>
+    <div id="setupBest3" style="display:none">${bestHtml}
+      <p style="font-size:13px;color:var(--muted);text-align:center;margin-top:4px">These ${nSimple} capture about ${money(bestNet)}/yr of the extra value — most of it, with fewer cards.</p>
+    </div>`;
+  } else {
+    html += `<div id="setupFull">${full}
+      ${totalExtra>0?`<div style="border-top:2px solid var(--ink);margin-top:6px;padding-top:10px;display:flex;justify-content:space-between;font-weight:700"><span>Total extra per year</span><span class="mono" style="color:var(--green-deep)">+${money(totalExtra)}</span></div>`:''}
+      <p style="font-size:13px;color:var(--muted);text-align:center;margin-top:8px">${nFull===1?'This card captures':'These capture'} the most for your spending — no need for more.</p>`;
+  }
+
+  // ---- WILD CARD section ----
+  html += wildCardHtml(r);
+
+  html += `<p style="font-size:12px;color:var(--muted);font-style:italic;margin-top:12px;text-align:center">Card terms verified June 2026. Bonuses change often; Amex offers are targeted ("up to"). Confirm on the issuer's page before applying.</p>`;
+  $('#cta-box').innerHTML = html;
+
+  if(showToggle){
+    $('#viewFull').onclick = ()=>{ $('#setupFull').style.display='block'; $('#setupBest3').style.display='none';
+      $('#viewFull').className='btn'; $('#viewBest3').className='btn ghost'; };
+    $('#viewBest3').onclick = ()=>{ $('#setupFull').style.display='none'; $('#setupBest3').style.display='block';
+      $('#viewBest3').className='btn'; $('#viewFull').className='btn ghost'; };
+  }
+
+  lastResult = r;
+  return r;
+}
+
+// ---------- wire final actions ----------
+$('#calcBtn').addEventListener('click', ()=>{
+  const r = renderReveal();
+  show(9);
+  // log every completed run (no email yet)
+  logSubmission({
+    biz_type:S.biztype, years:S.years, monthly_spend:S.spend, goal:S.goal,
+    current_card:(S.held||[]).join("|"), dream:S.dream||null, gap:Math.round(r.gap), email:null
+  });
+});
+
+$('#emailBtn').addEventListener('click', ()=>{
+  const email = $('#email').value.trim();
+  if(!email || !email.includes('@')){ $('#emailMsg').style.color='var(--red)'; $('#emailMsg').textContent='Enter a valid email.'; return; }
+  const r = lastResult || {gap:0};
+  logSubmission({
+    biz_type:S.biztype, years:S.years, monthly_spend:S.spend, goal:S.goal,
+    current_card:(S.held||[]).join("|"), dream:S.dream||null, gap:Math.round(r.gap),
+    email:email, wants_consult:true
+  });
+  $('#emailMsg').style.color='var(--green-deep)';
+  $('#emailMsg').textContent="Got it — we'll be in touch.";
+  $('#email').value='';
+});
+
+$('#restart').addEventListener('click', ()=>{
+  Object.assign(S,{biztype:'',years:'',spend:0,goal:'',cur:1.0,held:[],dream:'',cats:{}});
+  $$('.opt').forEach(o=>o.classList.remove('sel'));
+  $$('[data-next]').forEach(b=>{ if(b.closest('[data-step="1"]')) return; b.disabled=true; });
+  $('#biztype').value=''; $('#dream').value='';
+  const cl=$('#cardChecklist'); if(cl){cl.innerHTML='';cl.dataset.built='';}
+  show(0);  // back to landing
+});
+
+// landing -> start questionnaire (both CTA buttons)
+$('#startBtn').addEventListener('click', ()=> show(1));
+const sb2 = document.getElementById('startBtn2');
+if(sb2) sb2.addEventListener('click', ()=> show(1));
+
+// ---- counter (real aggregate, hidden until it crosses a threshold) ----
+async function loadCounter(){
+  try{
+    const res = await fetch(SUPABASE_URL+'/rest/v1/ledger_stats?select=*', {
+      headers:{ 'apikey':SUPABASE_ANON, 'Authorization':'Bearer '+SUPABASE_ANON }
+    });
+    if(!res.ok) return;
+    const rows = await res.json();
+    if(!rows || !rows.length) return;
+    const { business_count, total_found } = rows[0];
+    // only show once it's non-embarrassing
+    if(business_count >= 25 && total_found >= 50000){
+      const el = document.getElementById('counter');
+      const txt = document.getElementById('counterText');
+      txt.textContent = `${Number(business_count).toLocaleString('en-US')} businesses have found $${Math.round(total_found).toLocaleString('en-US')} in rewards they were missing.`;
+      el.style.display = 'block';
+    }
+  }catch(e){ /* counter is optional — never block */ }
+}
+loadCounter();
+
+</script>
+</body>
+</html>
