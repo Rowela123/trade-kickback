@@ -209,10 +209,6 @@
     <h2 style="font-size:25px;line-height:1.25;text-align:center;margin-bottom:10px">You spend thousands a month on materials and fuel. Are you getting anything back?</h2>
     <p style="text-align:center;font-size:16px;color:var(--muted);margin-bottom:8px">Find out what your business spending is leaving on the table.</p>
 
-    <div id="counter" style="display:none;text-align:center;margin:18px 0;padding:12px;background:#f0f6f1;border:1px solid var(--green)">
-      <span class="mono" id="counterText" style="font-size:14px;color:var(--green-deep)"></span>
-    </div>
-
     <div style="margin:22px 0">
       <h3 style="font-size:14px;font-family:'Courier New',monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);text-align:center;margin-bottom:14px">How it works</h3>
       <div style="display:flex;flex-direction:column;gap:10px">
@@ -379,11 +375,14 @@
       <div style="background:#f0f6f1;border:1px solid var(--green);padding:20px 18px;text-align:center">
         <h3 style="font-size:19px;margin-bottom:8px">Want help actually setting this up?</h3>
         <p style="font-size:14.5px;color:var(--muted);margin-bottom:16px;max-width:44ch;margin:0 auto 16px">
-          Applying for the right cards, moving your spend over, and timing the bonuses can be a hassle to do alone. Leave your email and we'll reach out about a done-with-you setup — no obligation.
+          Applying for the right cards, moving your spend over, and timing the bonuses can be a hassle to do alone. Leave your name and email and we'll reach out about a done-with-you setup — no obligation.
         </p>
-        <div style="display:flex;gap:8px;max-width:380px;margin:0 auto">
-          <input type="text" id="email" placeholder="you@yourbusiness.com" style="flex:1">
-          <button class="btn" id="emailBtn" style="white-space:nowrap">Contact me</button>
+        <div style="display:flex;flex-direction:column;gap:8px;max-width:380px;margin:0 auto">
+          <input type="text" id="lname" placeholder="Your name" autocomplete="name">
+          <div style="display:flex;gap:8px">
+            <input type="email" id="email" placeholder="you@yourbusiness.com" autocomplete="email" style="flex:1">
+            <button class="btn" id="emailBtn" style="white-space:nowrap">Contact me</button>
+          </div>
         </div>
         <div id="emailMsg" style="font-size:13px;color:var(--green-deep);margin-top:8px;height:16px"></div>
         <div style="font-size:12px;color:var(--muted);margin-top:4px;font-style:italic">No spam — we'll only use this to talk about setting up your rewards.</div>
@@ -408,28 +407,49 @@
 
 <script>
 // ---------- state ----------
-const SUPABASE_URL = 'https://xwkxhkocjgczekhpiroq.supabase.co';
-const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh3a3hoa29jamdjemVraHBpcm9xIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI3MzU2NDAsImV4cCI6MjA5ODMxMTY0MH0.UDT_Yxvs3riUNS5X2yA1JpzPU0xmfWYp2DKEmvblE74';
+// Leads go straight to the Happy Out lead pipeline (Trigger.dev -> Resend ->
+// Alan's inbox + an auto-reply to the prospect). Trade Kickback has no database
+// of its own: the audit is entirely client-side, and the only thing worth
+// keeping is a person who asked to be contacted.
+const LEAD_ENDPOINT = 'https://happyout.io/api/lead';
 
-async function logSubmission(row){
+// Builds the body of the notification email: the audit result is the lead
+// qualification, so it travels with the address rather than being thrown away.
+function auditSummary(r){
+  const held = (S.held||[]).join(', ') || 'none given';
+  const lines = [
+    'TRADE KICKBACK — rewards audit lead',
+    '',
+    'Business type: ' + (S.biztype || '—'),
+    'Years trading: ' + (S.years || '—'),
+    'Monthly card spend: $' + Number(S.spend||0).toLocaleString('en-US'),
+    'Goal: ' + (S.goal || '—'),
+    'Cards held today: ' + held,
+    'Dream destination: ' + (S.dream || '—'),
+    '',
+    'Ongoing gap found: $' + Math.round(r.ongoingGap||r.gap||0).toLocaleString('en-US') + '/yr',
+    'Year-one gap (incl. signup bonuses): $' + Math.round(r.year1Gap||r.gap||0).toLocaleString('en-US'),
+  ];
+  return lines.join('\n');
+}
+
+// Resolves true only on a real ok:true from the server. The old version showed
+// "we'll be in touch" no matter what happened, which meant a dead backend looked
+// identical to a delivered lead.
+async function sendLead(name, email, r){
   try{
-    const res = await fetch(SUPABASE_URL+'/rest/v1/ledger_submissions',{
+    const res = await fetch(LEAD_ENDPOINT,{
       method:'POST',
-      headers:{
-        'apikey':SUPABASE_ANON,
-        'Authorization':'Bearer '+SUPABASE_ANON,
-        'Content-Type':'application/json',
-        'Prefer':'return=minimal'
-      },
-      body:JSON.stringify(row)
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({ name, email, message:auditSummary(r), company:S.biztype||'' })
     });
-    if(!res.ok){
-      const txt = await res.text();
-      console.error('Supabase insert failed:', res.status, txt);
-    } else {
-      console.log('Supabase insert OK:', res.status);
-    }
-  }catch(e){ console.error('Supabase insert error (network/CORS?):', e); }
+    const data = await res.json().catch(()=>({}));
+    if(res.ok && data.ok) return {ok:true};
+    return {ok:false, error:data.error};
+  }catch(e){
+    console.error('Lead send failed:', e);
+    return {ok:false};
+  }
 }
 
 const S = { biztype:'', years:'', spend:0, goal:'', cur:1.0, held:[],
@@ -583,7 +603,13 @@ function buildChecklist(){
   CARDS.forEach(c=> box.appendChild(mk(c.id, c.name, c.issuer+(c.fee?` · $${c.fee}/yr`:' · $0'))));
 }
 
-// ---------- VERIFIED CARD DATABASE (June 2026) ----------
+// ---------- VERIFIED CARD DATABASE (re-verified 11 September 2026) ----------
+// Spot-checked against issuer + review sources on 11 Sep 2026: Amex Business Gold
+// ($375, 4x top-2 to $150k, up to 200k after $15k), Amex Business Platinum ($895,
+// up to 300k after $20k), Spark Cash Plus ($150, $2k after $30k), Ink Cash and Ink
+// Unlimited ($1,000 after $8k/4mo) all still current. Ink Preferred's minimum spend
+// was corrected from $10k to $8k. NOT re-verified: the Sapphire Reserve for Business
+// 200k offer, which had a January 2026 end date in one source.
 // rate = points/cash multiplier per $; cap = annual $ cap on bonus categories (shared) or null;
 // ptval = cents/point used for value (cash cards = 1.0; points cards conservative);
 // cats = per-category multiplier. Categories: advertising, travel, shipping, software (office/telecom),
@@ -614,7 +640,7 @@ const CARDS = [
    bonus:{amt:1000,spend:8000,type:'flat',note:'$1,000 after $8k/4mo'} },
   {id:'ink_pref', name:'Chase Ink Business Preferred', issuer:'Chase', fee:95, ptval:1.9, kind:'points',
    base:1, cats:{advertising:3, travel:3, shipping:3, software:3}, cap:150000, capNote:'3x on travel/shipping/internet-phone/ads to $150k combined',
-   bonus:{amt:1000,spend:10000,type:'flat',note:'$1,000 (100k pts) after $10k/3mo'} },
+   bonus:{amt:1000,spend:8000,type:'flat',note:'$1,000 (100k pts) after $8k/3mo'} },
   {id:'csr_biz', name:'Chase Sapphire Reserve for Business', issuer:'Chase', fee:795, ptval:2.0, kind:'points',
    base:1, cats:{advertising:3, travel:4}, cap:null, capNote:'3x ads UNCAPPED; 4x travel direct (8x via portal)',
    bonus:{amt:200000,spend:30000,type:'flat',unit:'points',note:'200,000 pts after $30k/6mo'} },
@@ -1088,27 +1114,31 @@ function renderReveal(){
 
 // ---------- wire final actions ----------
 $('#calcBtn').addEventListener('click', ()=>{
-  const r = renderReveal();
+  renderReveal();
   show(9);
-  // log every completed run (no email yet)
-  logSubmission({
-    biz_type:S.biztype, years:S.years, monthly_spend:S.spend, goal:S.goal,
-    current_card:(S.held||[]).join("|"), dream:S.dream||null, gap:Math.round(r.gap), email:null
-  });
 });
 
-$('#emailBtn').addEventListener('click', ()=>{
+$('#emailBtn').addEventListener('click', async ()=>{
+  const btn = $('#emailBtn');
+  const name = $('#lname').value.trim();
   const email = $('#email').value.trim();
-  if(!email || !email.includes('@')){ $('#emailMsg').style.color='var(--red)'; $('#emailMsg').textContent='Enter a valid email.'; return; }
-  const r = lastResult || {gap:0};
-  logSubmission({
-    biz_type:S.biztype, years:S.years, monthly_spend:S.spend, goal:S.goal,
-    current_card:(S.held||[]).join("|"), dream:S.dream||null, gap:Math.round(r.gap),
-    email:email, wants_consult:true
-  });
-  $('#emailMsg').style.color='var(--green-deep)';
-  $('#emailMsg').textContent="Got it — we'll be in touch.";
-  $('#email').value='';
+  const msg = $('#emailMsg');
+  if(!name){ msg.style.color='var(--red)'; msg.textContent='Enter your name.'; return; }
+  if(!email || !email.includes('@')){ msg.style.color='var(--red)'; msg.textContent='Enter a valid email.'; return; }
+
+  btn.disabled = true;
+  msg.style.color='var(--muted)'; msg.textContent='Sending…';
+  const res = await sendLead(name, email, lastResult || {gap:0});
+  btn.disabled = false;
+
+  if(res.ok){
+    msg.style.color='var(--green-deep)';
+    msg.textContent="Got it — we'll be in touch.";
+    $('#lname').value=''; $('#email').value='';
+  } else {
+    msg.style.color='var(--red)';
+    msg.textContent = res.error || "That didn't send — please email hello@happyout.io.";
+  }
 });
 
 $('#restart').addEventListener('click', ()=>{
@@ -1124,27 +1154,6 @@ $('#restart').addEventListener('click', ()=>{
 $('#startBtn').addEventListener('click', ()=> show(1));
 const sb2 = document.getElementById('startBtn2');
 if(sb2) sb2.addEventListener('click', ()=> show(1));
-
-// ---- counter (real aggregate, hidden until it crosses a threshold) ----
-async function loadCounter(){
-  try{
-    const res = await fetch(SUPABASE_URL+'/rest/v1/ledger_stats?select=*', {
-      headers:{ 'apikey':SUPABASE_ANON, 'Authorization':'Bearer '+SUPABASE_ANON }
-    });
-    if(!res.ok) return;
-    const rows = await res.json();
-    if(!rows || !rows.length) return;
-    const { business_count, total_found } = rows[0];
-    // only show once it's non-embarrassing
-    if(business_count >= 25 && total_found >= 50000){
-      const el = document.getElementById('counter');
-      const txt = document.getElementById('counterText');
-      txt.textContent = `${Number(business_count).toLocaleString('en-US')} businesses have found $${Math.round(total_found).toLocaleString('en-US')} in rewards they were missing.`;
-      el.style.display = 'block';
-    }
-  }catch(e){ /* counter is optional — never block */ }
-}
-loadCounter();
 
 </script>
 </body>
